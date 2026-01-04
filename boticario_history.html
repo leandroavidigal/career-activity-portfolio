@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Histórico Profissional — Grupo Boticário (GitHub + Entregas)</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1620;
+      --panel2:#0c121a;
+      --text:#e6edf3;
+      --muted:rgba(230,237,243,.75);
+      --border:rgba(230,237,243,.12);
+      --accent:#58a6ff;
+      --ok:#2ea043;
+      --warn:#d29922;
+      --chip:rgba(88,166,255,.12);
+      --shadow:0 12px 40px rgba(0,0,0,.35);
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1080px;margin:0 auto;padding:28px 18px 56px;}
+    .topbar{
+      position:sticky;top:0;z-index:20;
+      background:rgba(11,15,20,.88);backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar .inner{max-width:1080px;margin:0 auto;padding:10px 18px;display:flex;gap:10px;align-items:center;justify-content:space-between;}
+    .brand{display:flex;gap:10px;align-items:center;min-width:0}
+    .dot{width:10px;height:10px;border-radius:999px;background:var(--ok);box-shadow:0 0 0 4px rgba(46,160,67,.15)}
+    .brand b{font-size:13px}
+    .brand span{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .nav a{font-size:12px;padding:6px 10px;border:1px solid rgba(88,166,255,.35);border-radius:999px;background:transparent}
+    .nav a:hover{background:rgba(88,166,255,.12);text-decoration:none}
+
+    .hero{
+      padding:18px 18px 0;max-width:1080px;margin:0 auto;
+    }
+    .heroCard{
+      border:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(15,22,32,.95), rgba(12,18,26,.95));
+      border-radius:18px;padding:18px 18px 16px;box-shadow:var(--shadow);
+    }
+    .kicker{display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:12px}
+    .chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid rgba(230,237,243,.14);background:rgba(230,237,243,.04)}
+    .chip .mini{width:8px;height:8px;border-radius:999px;background:var(--accent)}
+    h1{margin:10px 0 4px;font-size:22px;letter-spacing:.2px}
+    .subtitle{margin:0;color:var(--muted);max-width:74ch}
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:14px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+    .card{border:1px solid var(--border);background:var(--panel);border-radius:16px;padding:14px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+    .card h2{margin:0 0 8px;font-size:13px;color:var(--muted);font-weight:650;text-transform:uppercase;letter-spacing:.12em}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    @media (max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+    .kpi{padding:12px;border:1px solid rgba(230,237,243,.10);background:var(--panel2);border-radius:14px}
+    .kpi .label{font-size:12px;color:var(--muted)}
+    .kpi .value{font-size:18px;font-weight:750;margin-top:6px}
+    .kpi .hint{font-size:11px;color:var(--muted);margin-top:2px}
+
+    .split{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .donutWrap{display:flex;gap:12px;align-items:center;flex:1;min-width:260px}
+    .legend{display:grid;gap:8px;min-width:220px}
+    .legendItem{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}
+    .swatch{width:10px;height:10px;border-radius:3px}
+    .swatch.commit{background:rgba(46,160,67,.95)}
+    .swatch.pr{background:rgba(88,166,255,.95)}
+    .swatch.review{background:rgba(210,153,34,.95)}
+    .legendItem b{color:var(--text);font-weight:650}
+
+    .section{margin-top:18px}
+    .sectionTitle{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:18px 0 10px}
+    .sectionTitle h3{margin:0;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .sectionTitle .small{font-size:12px;color:var(--muted)}
+
+    .timeline{display:grid;gap:10px}
+    .event{border:1px solid rgba(230,237,243,.10);background:var(--panel2);border-radius:14px;padding:12px}
+    .event .when{font-size:12px;color:var(--muted)}
+    .event .what{font-size:13px;margin-top:4px}
+    .event .meta{font-size:12px;color:var(--muted);margin-top:6px}
+
+    details{border:1px solid rgba(230,237,243,.10);background:var(--panel2);border-radius:14px;padding:10px 12px}
+    details + details{margin-top:10px}
+    summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    .role{font-weight:750}
+    .roleTag{font-size:11px;color:var(--muted);border:1px solid rgba(230,237,243,.12);padding:3px 8px;border-radius:999px}
+    ul{margin:10px 0 2px 18px}
+    li{margin:6px 0;color:rgba(230,237,243,.88)}
+    .foot{margin-top:18px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);padding-top:14px}
+    .quote{border-left:3px solid rgba(88,166,255,.55);padding:10px 12px;background:rgba(88,166,255,.06);border-radius:12px;margin-top:10px}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:12px}
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <div class="brand">
+        <div class="dot" aria-hidden="true"></div>
+        <div style="min-width:0">
+          <b>Histórico Profissional — Grupo Boticário</b>
+          <div><span>GitHub Activity + Entregas (sem código corporativo)</span></div>
+        </div>
+      </div>
+      <div class="nav">
+        <a href="#metricas">Métricas</a>
+        <a href="#timeline">Linha do tempo</a>
+        <a href="#projetos">Projetos & Entregas</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="heroCard">
+      <div class="kicker">
+        <span class="chip"><span class="mini"></span>Time de Soluções Digitais & Varejo</span>
+        <span class="chip">GCP • BigQuery • DataProc • Airflow</span>
+        <span class="chip">Governança • Qualidade • Observabilidade</span>
+      </div>
+      <h1>Leandro Vidigal — Engineering Impact Snapshot</h1>
+      <p class="subtitle">
+        Resumo profissional do período no Grupo Boticário, consolidando atividade de contribuição no GitHub e entregas técnicas de alto impacto
+        (padrões, pipelines, qualidade, governança e sustentação). Este material é deliberadamente descritivo e não contém código proprietário.
+      </p>
+
+      <div class="grid">
+        <div class="card" id="metricas">
+          <h2>Métricas (GitHub – 2025)</h2>
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Contribuições</div>
+              <div class="value">468</div>
+              <div class="hint">Total no ano de 2025</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Distribuição</div>
+              <div class="value">50% / 27% / 23%</div>
+              <div class="hint">Commits / PRs / Code reviews</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Entrada na organização</div>
+              <div class="value">11 Jul 2025</div>
+              <div class="hint">Grupo Boticário</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Áreas-chave</div>
+              <div class="value">Data Platform</div>
+              <div class="hint">Airflow • BigQuery • DDL • Functions</div>
+            </div>
+          </div>
+
+          <div class="quote">
+            Evidências do relatório: <b>468 contribuições em 2025</b> e a distribuição percentual entre <b>Commits (50%)</b>, <b>Pull requests (27%)</b> e <b>Code review (23%)</b>. Além disso, registro de ingresso na organização em <b>11 Jul 2025</b>.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Distribuição de atividade</h2>
+          <div class="split">
+            <div class="donutWrap">
+              <!-- Inline SVG donut: 50% commits, 27% PRs, 23% reviews -->
+              <svg width="160" height="160" viewBox="0 0 42 42" role="img" aria-label="Distribuição de atividade: commits, PRs e code review">
+                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="rgba(230,237,243,.08)" stroke-width="6"></circle>
+
+                <!-- Commits 50% -->
+                <circle cx="21" cy="21" r="15.915" fill="transparent"
+                  stroke="rgba(46,160,67,.95)" stroke-width="6"
+                  stroke-dasharray="50 50" stroke-dashoffset="25"
+                  stroke-linecap="round"></circle>
+
+                <!-- PRs 27% -->
+                <circle cx="21" cy="21" r="15.915" fill="transparent"
+                  stroke="rgba(88,166,255,.95)" stroke-width="6"
+                  stroke-dasharray="27 73" stroke-dashoffset="-25"
+                  stroke-linecap="round"></circle>
+
+                <!-- Reviews 23% -->
+                <circle cx="21" cy="21" r="15.915" fill="transparent"
+                  stroke="rgba(210,153,34,.95)" stroke-width="6"
+                  stroke-dasharray="23 77" stroke-dashoffset="-52"
+                  stroke-linecap="round"></circle>
+
+                <text x="21" y="20" text-anchor="middle" fill="rgba(230,237,243,.92)" font-size="4" font-weight="700">2025</text>
+                <text x="21" y="26" text-anchor="middle" fill="rgba(230,237,243,.75)" font-size="3">468 contrib.</text>
+              </svg>
+
+              <div class="legend" aria-label="Legenda">
+                <div class="legendItem"><span class="swatch commit"></span><b>Commits</b> <span>50%</span></div>
+                <div class="legendItem"><span class="swatch pr"></span><b>Pull requests</b> <span>27%</span></div>
+                <div class="legendItem"><span class="swatch review"></span><b>Code review</b> <span>23%</span></div>
+              </div>
+            </div>
+
+            <div style="flex:1;min-width:240px;color:var(--muted);font-size:12px">
+              <div><b style="color:var(--text)">Leitura recomendada:</b> use esta seção como “resumo executivo”.</div>
+              <div style="margin-top:6px">
+                O foco aqui é demonstrar volume e consistência de contribuição, além de atuação em revisão de código e entregas orientadas a governança/qualidade.
+              </div>
+              <div style="margin-top:10px">
+                <span class="chip"><span class="mini"></span>Sem exposição de repositórios privados</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="timeline">
+        <div class="sectionTitle">
+          <h3>Linha do tempo (marcos visíveis)</h3>
+          <div class="small">Exemplos de eventos e PRs citados no relatório</div>
+        </div>
+
+        <div class="timeline">
+          <div class="event">
+            <div class="when">Julho 2025</div>
+            <div class="what"><b>Entrada na organização Grupo Boticário</b> e abertura do primeiro Pull Request (repositório privado).</div>
+            <div class="meta">Marco de início de contribuição corporativa no GitHub.</div>
+          </div>
+
+          <div class="event">
+            <div class="when">18 Jul 2025</div>
+            <div class="what"><b>Procedure + execution plan (antecipação de cartões)</b> — PR com alto nível de discussão (12 comentários).</div>
+            <div class="meta">Entrega típica de engenharia de dados: procedimentos, desempenho e governança de mudanças.</div>
+          </div>
+
+          <div class="event">
+            <div class="when">05 Ago 2025</div>
+            <div class="what"><b>Atualização de procedure PIX (e-Guardian / Veripag)</b> — PR com 11 comentários e validação de negócio para produtização.</div>
+            <div class="meta">Integração de requisitos de negócio e pipeline seguro para produção.</div>
+          </div>
+
+          <div class="event">
+            <div class="when">29 Set 2025</div>
+            <div class="what"><b>Nova tabela de gestão / centralização de contas</b> — PR com 7 comentários, com mudanças estruturais relevantes.</div>
+            <div class="meta">Entrega em BigQuery/DDL e evolução de modelos/refined.</div>
+          </div>
+
+          <div class="event">
+            <div class="when">11 Nov 2025</div>
+            <div class="what"><b>Nova tabela de conciliação (franqueados)</b> — PR com 7 comentários, com governança de checklist de abertura.</div>
+            <div class="meta">Padronização de PRs e qualidade do processo de desenvolvimento.</div>
+          </div>
+
+          <div class="event">
+            <div class="when">01 Dez 2025</div>
+            <div class="what"><b>DAG mensal (Soluções Digitais & Varejo)</b> — PR com 5 comentários e checklist de timeout/boas práticas de Composer.</div>
+            <div class="meta">Orquestração e confiabilidade de pipelines em Airflow.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="projetos">
+        <div class="sectionTitle">
+          <h3>Projetos & Entregas (high-level)</h3>
+          <div class="small">Resumo profissional do que foi realizado no período</div>
+        </div>
+
+        <details open>
+          <summary>
+            <div>
+              <div class="role">Engenheiro de Dados</div>
+              <div class="roleTag">GCP • BigQuery • DataProc • Airflow • GitOps</div>
+            </div>
+            <span style="color:var(--muted);font-size:12px">Expandir/Recolher</span>
+          </summary>
+          <ul>
+            <li>Design e implementação de <b>pipelines escaláveis no GCP</b> (BigQuery, DataProc, Airflow), estruturando camadas <b>RAW / TRUSTED / REFINED</b> com particionamento, clusterização e cargas incrementais/completas para cumprir SLAs.</li>
+            <li>Criação de um <b>framework unificado de Qualidade de Dados</b> com regras em <b>YAML</b> (ex.: <code>emptyTable</code>, <code>freshnessByTableMetadata</code>, <code>duplicatesByKey</code>, <code>nonNullExpectation</code>) com observabilidade ponta a ponta e alertas automatizados.</li>
+            <li>Automação e orquestração de workflows <b>ETL/ELT</b> com <b>Airflow</b>, <b>GitHub Actions</b> e práticas de <b>GitOps</b>, padronizando CI/CD e elevando consistência de entrega.</li>
+            <li>Atuação forte em <b>governança e conformidade</b> (GDPR/LGPD): DocKeys, classificação de sensibilidade e padrões de nomenclatura para ativos auditáveis.</li>
+            <li>Mentoria, code review, pair programming e workshops (otimização de SQL, design de YAML e padrões de engenharia no GCP).</li>
+            <li>Experiência prática com <b>DAGs, UDFs, Stored Procedures</b> e gestão ponta a ponta do ciclo de vida (requisitos → produção) orientado a KPIs.</li>
+            <li>Otimização de performance e custos via particionamento, clusterização e monitoramento contínuo.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>
+            <div>
+              <div class="role">Engenheiro de Sustentação & Observabilidade de Pipelines</div>
+              <div class="roleTag">Airflow • Incidentes • RCA • Runbooks • MTTR</div>
+            </div>
+            <span style="color:var(--muted);font-size:12px">Expandir/Recolher</span>
+          </summary>
+          <ul>
+            <li>Sustentação operacional de <b>DAGs no Apache Airflow</b>: triagem de incidentes, análise de logs/métricas e recuperação rápida dentro dos SLAs.</li>
+            <li>Condução de <b>RCA</b> para recorrências (mudanças de schema, dependências quebradas, credenciais/conexões, falhas de freshness/qualidade, limites de concorrência/recursos, janelas de dados) com correções definitivas.</li>
+            <li>Ações de recuperação controladas: <b>reruns</b>, <b>backfills</b>, reprocessamentos e validações pós-correção para garantir consistência fim a fim.</li>
+            <li>Evolução contínua de observabilidade: ajuste de alertas/thresholds para reduzir ruído e aumentar detecção útil (menos falso-positivo, mais precisão).</li>
+            <li>Criação e manutenção de <b>runbooks/playbooks</b>, padronizando troubleshooting e reduzindo MTTR.</li>
+            <li>Melhoria de robustez em DAGs: idempotência, retries/timeouts, sensores, tratamento de exceções e governança de dependências.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>
+            <div>
+              <div class="role">Analytics Engineer</div>
+              <div class="roleTag">Dados como Produto • KPIs • Descoberta • Modelagem</div>
+            </div>
+            <span style="color:var(--muted);font-size:12px">Expandir/Recolher</span>
+          </summary>
+          <ul>
+            <li>Liderança na coleta de requisitos e tradução das necessidades de negócio em soluções analíticas escaláveis, atuando como interface entre times técnicos e stakeholders.</li>
+            <li>Priorização de iniciativas com base em impacto e alinhamento estratégico, garantindo entrega consistente de insights vinculados a KPIs.</li>
+            <li>Concepção e evolução de <b>produtos de dados reutilizáveis</b> com ênfase em usabilidade, confiabilidade e governança (Dados como Produto).</li>
+            <li>Facilitação de sessões de discovery e workshops multifuncionais para acelerar decisões data-driven e engajamento de stakeholders.</li>
+            <li>Gestão do ciclo de vida de projetos de dados (ideação → produção) com foco em documentação, escalabilidade e melhoria contínua.</li>
+            <li>Padrões de modelagem, versionamento e governança para consistência e rastreabilidade, além de mentoria técnica para elevar maturidade analítica.</li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="foot">
+        <div><b>Nota:</b> Este HTML é uma vitrine profissional (portfólio) do período e consolida métricas e entregas em linguagem neutra. Não inclui nomes internos sensíveis, links privados, nem artefatos proprietários.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Smooth scroll for anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+</body>
+</html>
