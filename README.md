@@ -14,7 +14,7 @@ e descrição de responsabilidades.
 
 ### Grupo Boticário — Engineering Impact Snapshot (2025)
 
-➡️ **[Clique aqui para visualizar o histórico completo em HTML](https://leandroavidigal.github.io/career-activity-portfolio/)**
+➡️ **[Clique aqui para visualizar o histórico completo em HTML](https://leandroavidigal.github.io/career-activity-portfolio/boticario_history.html)**
 
 O material apresenta:
 - Métricas agregadas de atividade no GitHub (commits, pull requests e code reviews)
